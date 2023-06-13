@@ -31,7 +31,7 @@ public class AdapterReminders extends RecyclerView.Adapter<AdapterReminders.MyVi
 
         Reminders reminders = allReminders.get(i);
         if(!reminders.getMessage().equals(""))
-            message.setText(reminders.getMessage());
+            message.setText(reminders.getMessage()+" "+"("+reminders.getAmount()+")");
         else
             message.setHint("No Message");
         time.setText(reminders.getRemindDate().toString());

@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -68,15 +67,16 @@ public class MainPage extends AppCompatActivity {
         dialog = new Dialog(MainPage.this);
         dialog.setContentView(R.layout.floating_popup);
 
-        final TextView textView = dialog.findViewById(R.id.date);
+        final TextView date = dialog.findViewById(R.id.date);
         Button select,add;
-        select = dialog.findViewById(R.id.selectDate);
+       // select = dialog.findViewById(R.id.selectDate);
         add = dialog.findViewById(R.id.addButton);
-        final EditText message = dialog.findViewById(R.id.message);
+        final EditText mName = dialog.findViewById(R.id.message);
+        final EditText doseAmount = dialog.findViewById(R.id.amount);
 
 
         final Calendar newCalender = Calendar.getInstance();
-        select.setOnClickListener(new View.OnClickListener() {
+        date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatePickerDialog dialog = new DatePickerDialog(MainPage.this, new DatePickerDialog.OnDateSetListener() {
@@ -93,7 +93,7 @@ public class MainPage extends AppCompatActivity {
                                 Calendar tem = Calendar.getInstance();
                                 Log.w("TIME",System.currentTimeMillis()+"");
                                 if(newDate.getTimeInMillis()-tem.getTimeInMillis()>0)
-                                    textView.setText(newDate.getTime().toString());
+                                    date.setText(newDate.getTime().toString());
                                 else
                                     Toast.makeText(MainPage.this,"Invalid time",Toast.LENGTH_SHORT).show();
 
@@ -117,9 +117,10 @@ public class MainPage extends AppCompatActivity {
 
                 RoomDAO roomDAO = appDatabase.getRoomDAO();
                 Reminders reminders = new Reminders();
-                reminders.setMessage(message.getText().toString().trim());
-                Date remind = new Date(textView.getText().toString().trim());
+                reminders.setMessage(mName.getText().toString().trim());
+                Date remind = new Date(date.getText().toString().trim());
                 reminders.setRemindDate(remind);
+                reminders.setAmount(doseAmount.getText().toString().trim());
                 roomDAO.Insert(reminders);
                 List<Reminders> l = roomDAO.getAll();
                 reminders = l.get(l.size()-1);
@@ -130,6 +131,7 @@ public class MainPage extends AppCompatActivity {
                 calendar.set(Calendar.SECOND,0);
                 Intent intent = new Intent(MainPage.this,NotifierAlarm.class);
                 intent.putExtra("Message",reminders.getMessage());
+                intent.putExtra("Amount",reminders.getAmount());
                 intent.putExtra("RemindDate",reminders.getRemindDate().toString());
                 intent.putExtra("id",reminders.getId());
                 PendingIntent intent1 = PendingIntent.getBroadcast(MainPage.this,reminders.getId(),intent,PendingIntent.FLAG_UPDATE_CURRENT);

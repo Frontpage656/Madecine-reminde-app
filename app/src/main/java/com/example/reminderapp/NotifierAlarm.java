@@ -28,6 +28,7 @@ public class NotifierAlarm extends BroadcastReceiver {
         RoomDAO roomDAO = appDatabase.getRoomDAO();
         Reminders reminder = new Reminders();
         reminder.setMessage(intent.getStringExtra("Message"));
+        reminder.setAmount(intent.getStringExtra("Amount"));
         reminder.setRemindDate(new Date(intent.getStringExtra("RemindDate")));
         reminder.setId(intent.getIntExtra("id",0));
         roomDAO.Delete(reminder);
@@ -51,9 +52,9 @@ public class NotifierAlarm extends BroadcastReceiver {
             channel = new NotificationChannel("my_channel_01","hello", NotificationManager.IMPORTANCE_HIGH);
         }
 
-        Notification notification = builder.setContentTitle("Reminder")
-                .setContentText(intent.getStringExtra("Message")).setAutoCancel(true)
-                .setSound(alarmsound).setSmallIcon(R.mipmap.ic_launcher_round)
+        Notification notification = builder.setContentTitle("Madeline Reminder")
+                .setContentText(intent.getStringExtra("Message ")).setAutoCancel(true)
+                .setSound(alarmsound).setSmallIcon(R.drawable.medicine)
                 .setContentIntent(intent2)
                 .setChannelId("my_channel_01")
                 .build();

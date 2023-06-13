@@ -18,6 +18,16 @@ public class Reminders {
     String message;
     Date  remindDate;
 
+    String amount;
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
     public String getMessage() {
         return message;
     }
